@@ -155,4 +155,73 @@ final class TestimonialSlideRendererTest extends TestCase {
 			'null value'   => array( null ),
 		);
 	}
+
+	public function test_omits_arrows_and_dots_by_default(): void {
+		$html = Testimonial_Slide_Renderer::render(
+			array( array( 'name' => 'A', 'quote' => 'One' ) )
+		);
+
+		$this->assertStringNotContainsString( 'sagiris-ets__arrow', $html );
+		$this->assertStringNotContainsString( 'sagiris-ets__dots', $html );
+	}
+
+	public function test_renders_arrows_when_enabled(): void {
+		$html = Testimonial_Slide_Renderer::render(
+			array( array( 'name' => 'A', 'quote' => 'One' ) ),
+			'',
+			array( 'show_arrows' => true )
+		);
+
+		$this->assertStringContainsString( 'sagiris-ets__arrow--prev', $html );
+		$this->assertStringContainsString( 'sagiris-ets__arrow--next', $html );
+	}
+
+	public function test_renders_one_dot_per_testimonial_when_enabled(): void {
+		$html = Testimonial_Slide_Renderer::render(
+			array(
+				array( 'name' => 'A', 'quote' => 'One' ),
+				array( 'name' => 'B', 'quote' => 'Two' ),
+				array( 'name' => 'C', 'quote' => 'Three' ),
+			),
+			'',
+			array( 'show_dots' => true )
+		);
+
+		$this->assertSame( 3, substr_count( $html, 'sagiris-ets__dot"' ) );
+	}
+
+	public function test_omits_data_autoplay_attributes_when_autoplay_is_off(): void {
+		$html = Testimonial_Slide_Renderer::render(
+			array( array( 'name' => 'A', 'quote' => 'One' ) )
+		);
+
+		$this->assertStringNotContainsString( 'data-autoplay', $html );
+	}
+
+	public function test_applies_data_autoplay_attributes_when_enabled(): void {
+		$html = Testimonial_Slide_Renderer::render(
+			array( array( 'name' => 'A', 'quote' => 'One' ) ),
+			'',
+			array(
+				'autoplay'       => true,
+				'autoplay_delay' => 7000,
+			)
+		);
+
+		$this->assertStringContainsString( 'data-autoplay="yes"', $html );
+		$this->assertStringContainsString( 'data-autoplay-delay="7000"', $html );
+	}
+
+	public function test_clamps_autoplay_delay_to_a_minimum(): void {
+		$html = Testimonial_Slide_Renderer::render(
+			array( array( 'name' => 'A', 'quote' => 'One' ) ),
+			'',
+			array(
+				'autoplay'       => true,
+				'autoplay_delay' => 100,
+			)
+		);
+
+		$this->assertStringContainsString( 'data-autoplay-delay="1000"', $html );
+	}
 }

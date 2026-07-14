@@ -16,6 +16,7 @@ class Plugin {
 	public static function init(): void {
 		add_action( 'elementor/widgets/register', array( __CLASS__, 'register_widgets' ) );
 		add_action( 'elementor/frontend/after_register_styles', array( __CLASS__, 'register_styles' ) );
+		add_action( 'elementor/frontend/after_register_scripts', array( __CLASS__, 'register_scripts' ) );
 	}
 
 	/**
@@ -35,6 +36,16 @@ class Plugin {
 			SAGIRIS_ETS_URL . 'assets/css/testimonial-slider.css',
 			array(),
 			SAGIRIS_ETS_VERSION
+		);
+	}
+
+	public static function register_scripts(): void {
+		wp_register_script(
+			'sagiris-ets',
+			SAGIRIS_ETS_URL . 'assets/js/testimonial-slider.js',
+			array( 'jquery', 'elementor-frontend' ),
+			SAGIRIS_ETS_VERSION,
+			true
 		);
 	}
 }

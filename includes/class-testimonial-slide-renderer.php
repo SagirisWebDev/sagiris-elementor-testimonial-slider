@@ -18,8 +18,9 @@ class Testimonial_Slide_Renderer {
 	/**
 	 * @param array<int, array{name?: string, title?: string, rating?: int|string, quote?: string, image?: array{url?: string}}> $testimonials
 	 * @param string $wrapper_style Optional inline CSS declarations (e.g. from Carousel_Layout::style_attribute()) applied to the outer wrapper.
+	 * @param array{show_arrows?: bool, show_dots?: bool, autoplay?: bool, autoplay_delay?: int} $options Carousel-behavior toggles, all off/omitted by default.
 	 */
-	public static function render( array $testimonials, string $wrapper_style = '' ): string {
+	public static function render( array $testimonials, string $wrapper_style = '', array $options = array() ): string {
 		if ( empty( $testimonials ) ) {
 			return '';
 		}
@@ -30,12 +31,55 @@ class Testimonial_Slide_Renderer {
 		}
 
 		$style_attr = '' !== $wrapper_style ? sprintf( ' style="%s"', esc_attr( $wrapper_style ) ) : '';
+		$data_attr  = '';
+
+		if ( ! empty( $options['autoplay'] ) ) {
+			$delay     = isset( $options['autoplay_delay'] ) ? max( 1000, (int) $options['autoplay_delay'] ) : 5000;
+			$data_attr = sprintf( ' data-autoplay="yes" data-autoplay-delay="%d"', $delay );
+		}
+
+		$arrows_html = ! empty( $options['show_arrows'] ) ? self::render_arrows() : '';
+		$dots_html   = ! empty( $options['show_dots'] ) ? self::render_dots( count( $testimonials ) ) : '';
 
 		return sprintf(
-			'<div class="sagiris-ets"%s><div class="sagiris-ets__track">%s</div></div>',
+			'<div class="sagiris-ets"%1$s%2$s>%3$s<div class="sagiris-ets__track">%4$s</div>%5$s</div>',
 			$style_attr,
-			$slides
+			$data_attr,
+			$arrows_html,
+			$slides,
+			$dots_html
 		);
+	}
+
+	private static function render_arrows(): string {
+		return sprintf(
+			'<button type="button" class="sagiris-ets__arrow sagiris-ets__arrow--prev" aria-label="%1$s">&lsaquo;</button><button type="button" class="sagiris-ets__arrow sagiris-ets__arrow--next" aria-label="%2$s">&rsaquo;</button>',
+			esc_attr__( 'Previous testimonials', 'sagiris-elementor-testimonial-slider' ),
+			esc_attr__( 'Next testimonials', 'sagiris-elementor-testimonial-slider' )
+		);
+	}
+
+	private static function render_dots( int $count ): string {
+		if ( $count < 1 ) {
+			return '';
+		}
+
+		$dots = '';
+		for ( $i = 0; $i < $count; $i++ ) {
+			$dots .= sprintf(
+				'<button type="button" class="sagiris-ets__dot" data-slide-index="%1$d" aria-label="%2$s"></button>',
+				$i,
+				esc_attr(
+					sprintf(
+						/* translators: %d: testimonial number */
+						__( 'Go to testimonial %d', 'sagiris-elementor-testimonial-slider' ),
+						$i + 1
+					)
+				)
+			);
+		}
+
+		return sprintf( '<div class="sagiris-ets__dots">%s</div>', $dots );
 	}
 
 	/**

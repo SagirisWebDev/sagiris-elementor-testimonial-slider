@@ -38,6 +38,10 @@ class Widget_Testimonial_Slider extends Widget_Base {
 		return array( 'sagiris-ets' );
 	}
 
+	public function get_script_depends() {
+		return array( 'sagiris-ets' );
+	}
+
 	protected function register_controls() {
 		$this->start_controls_section(
 			'content_section',
@@ -152,16 +156,82 @@ class Widget_Testimonial_Slider extends Widget_Base {
 		);
 
 		$this->end_controls_section();
+
+		$this->start_controls_section(
+			'navigation_section',
+			array(
+				'label' => __( 'Navigation', 'sagiris-elementor-testimonial-slider' ),
+				'tab'   => Controls_Manager::TAB_STYLE,
+			)
+		);
+
+		$this->add_control(
+			'arrows',
+			array(
+				'label'        => __( 'Arrows', 'sagiris-elementor-testimonial-slider' ),
+				'type'         => Controls_Manager::SWITCHER,
+				'default'      => 'yes',
+				'label_on'     => __( 'Show', 'sagiris-elementor-testimonial-slider' ),
+				'label_off'    => __( 'Hide', 'sagiris-elementor-testimonial-slider' ),
+				'return_value' => 'yes',
+			)
+		);
+
+		$this->add_control(
+			'dots',
+			array(
+				'label'        => __( 'Dots', 'sagiris-elementor-testimonial-slider' ),
+				'type'         => Controls_Manager::SWITCHER,
+				'default'      => 'yes',
+				'label_on'     => __( 'Show', 'sagiris-elementor-testimonial-slider' ),
+				'label_off'    => __( 'Hide', 'sagiris-elementor-testimonial-slider' ),
+				'return_value' => 'yes',
+			)
+		);
+
+		$this->add_control(
+			'autoplay',
+			array(
+				'label'        => __( 'Autoplay', 'sagiris-elementor-testimonial-slider' ),
+				'type'         => Controls_Manager::SWITCHER,
+				'default'      => '',
+				'label_on'     => __( 'On', 'sagiris-elementor-testimonial-slider' ),
+				'label_off'    => __( 'Off', 'sagiris-elementor-testimonial-slider' ),
+				'return_value' => 'yes',
+			)
+		);
+
+		$this->add_control(
+			'autoplay_delay',
+			array(
+				'label'     => __( 'Autoplay Delay (ms)', 'sagiris-elementor-testimonial-slider' ),
+				'type'      => Controls_Manager::NUMBER,
+				'default'   => 5000,
+				'min'       => 1000,
+				'step'      => 500,
+				'condition' => array(
+					'autoplay' => 'yes',
+				),
+			)
+		);
+
+		$this->end_controls_section();
 	}
 
 	protected function render() {
-		$settings     = $this->get_settings_for_display();
-		$testimonials = isset( $settings['testimonials'] ) && is_array( $settings['testimonials'] )
+		$settings      = $this->get_settings_for_display();
+		$testimonials  = isset( $settings['testimonials'] ) && is_array( $settings['testimonials'] )
 			? $settings['testimonials']
 			: array();
 		$wrapper_style = Carousel_Layout::style_attribute( $settings );
+		$options       = array(
+			'show_arrows'    => 'yes' === ( $settings['arrows'] ?? '' ),
+			'show_dots'      => 'yes' === ( $settings['dots'] ?? '' ),
+			'autoplay'       => 'yes' === ( $settings['autoplay'] ?? '' ),
+			'autoplay_delay' => isset( $settings['autoplay_delay'] ) ? (int) $settings['autoplay_delay'] : 5000,
+		);
 
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Testimonial_Slide_Renderer escapes each field internally; $wrapper_style is built from a fixed integer whitelist in Carousel_Layout.
-		echo Testimonial_Slide_Renderer::render( $testimonials, $wrapper_style );
+		echo Testimonial_Slide_Renderer::render( $testimonials, $wrapper_style, $options );
 	}
 }
