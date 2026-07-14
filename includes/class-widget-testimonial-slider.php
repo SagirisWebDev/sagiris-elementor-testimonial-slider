@@ -70,6 +70,33 @@ class Widget_Testimonial_Slider extends Widget_Base {
 		);
 
 		$repeater->add_control(
+			'title',
+			array(
+				'label'       => __( 'Title / Company', 'sagiris-elementor-testimonial-slider' ),
+				'type'        => Controls_Manager::TEXT,
+				'default'     => '',
+				'label_block' => true,
+			)
+		);
+
+		$repeater->add_control(
+			'rating',
+			array(
+				'label'   => __( 'Rating', 'sagiris-elementor-testimonial-slider' ),
+				'type'    => Controls_Manager::SELECT,
+				'default' => '5',
+				'options' => array(
+					''  => __( 'None', 'sagiris-elementor-testimonial-slider' ),
+					'1' => __( '1 Star', 'sagiris-elementor-testimonial-slider' ),
+					'2' => __( '2 Stars', 'sagiris-elementor-testimonial-slider' ),
+					'3' => __( '3 Stars', 'sagiris-elementor-testimonial-slider' ),
+					'4' => __( '4 Stars', 'sagiris-elementor-testimonial-slider' ),
+					'5' => __( '5 Stars', 'sagiris-elementor-testimonial-slider' ),
+				),
+			)
+		);
+
+		$repeater->add_control(
 			'quote',
 			array(
 				'label'       => __( 'Quote', 'sagiris-elementor-testimonial-slider' ),
@@ -87,8 +114,10 @@ class Widget_Testimonial_Slider extends Widget_Base {
 				'fields'      => $repeater->get_controls(),
 				'default'     => array(
 					array(
-						'name'  => __( 'Jane Doe', 'sagiris-elementor-testimonial-slider' ),
-						'quote' => __( 'This product changed how we work.', 'sagiris-elementor-testimonial-slider' ),
+						'name'   => __( 'Jane Doe', 'sagiris-elementor-testimonial-slider' ),
+						'title'  => __( 'Owner, Doe & Co.', 'sagiris-elementor-testimonial-slider' ),
+						'rating' => '5',
+						'quote'  => __( 'This product changed how we work.', 'sagiris-elementor-testimonial-slider' ),
 					),
 				),
 				'title_field' => '{{{ name }}}',
