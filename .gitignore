@@ -1,0 +1,13 @@
+# Local / editor
+.DS_Store
+.env
+.env.*
+/.idea/
+/.vscode/
+/.claude/
+
+# Local-only harness config (not shipped with the repo)
+/.swd-harness/
+
+# Logs
+*.log
