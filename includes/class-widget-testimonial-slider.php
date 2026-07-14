@@ -9,6 +9,8 @@
 namespace Sagiris\ElementorTestimonialSlider;
 
 use Elementor\Controls_Manager;
+use Elementor\Group_Control_Background;
+use Elementor\Group_Control_Typography;
 use Elementor\Repeater;
 use Elementor\Widget_Base;
 
@@ -212,6 +214,56 @@ class Widget_Testimonial_Slider extends Widget_Base {
 				'condition' => array(
 					'autoplay' => 'yes',
 				),
+			)
+		);
+
+		$this->end_controls_section();
+
+		$this->start_controls_section(
+			'appearance_section',
+			array(
+				'label' => __( 'Appearance', 'sagiris-elementor-testimonial-slider' ),
+				'tab'   => Controls_Manager::TAB_STYLE,
+			)
+		);
+
+		$this->add_group_control(
+			Group_Control_Background::get_type(),
+			array(
+				'name'     => 'card_background',
+				'types'    => array( 'classic', 'gradient' ),
+				'selector' => '{{WRAPPER}} .sagiris-ets__slide',
+			)
+		);
+
+		$this->add_control(
+			'name_color',
+			array(
+				'label'     => __( 'Name Color', 'sagiris-elementor-testimonial-slider' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .sagiris-ets__name' => 'color: {{VALUE}};',
+				),
+			)
+		);
+
+		$this->add_control(
+			'title_color',
+			array(
+				'label'     => __( 'Title / Company Color', 'sagiris-elementor-testimonial-slider' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .sagiris-ets__title' => 'color: {{VALUE}};',
+				),
+			)
+		);
+
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
+			array(
+				'name'     => 'quote_typography',
+				'label'    => __( 'Quote Typography', 'sagiris-elementor-testimonial-slider' ),
+				'selector' => '{{WRAPPER}} .sagiris-ets__quote',
 			)
 		);
 
