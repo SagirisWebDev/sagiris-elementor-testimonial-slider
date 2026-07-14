@@ -38,8 +38,12 @@ class Testimonial_Slide_Renderer {
 			$data_attr = sprintf( ' data-autoplay="yes" data-autoplay-delay="%d"', $delay );
 		}
 
-		$arrows_html = ! empty( $options['show_arrows'] ) ? self::render_arrows() : '';
-		$dots_html   = ! empty( $options['show_dots'] ) ? self::render_dots( count( $testimonials ) ) : '';
+		// A single testimonial has nothing to navigate to - arrows/dots would
+		// be inert chrome, so they're suppressed regardless of the toggles.
+		$has_multiple_slides = count( $testimonials ) > 1;
+
+		$arrows_html = ! empty( $options['show_arrows'] ) && $has_multiple_slides ? self::render_arrows() : '';
+		$dots_html   = ! empty( $options['show_dots'] ) && $has_multiple_slides ? self::render_dots( count( $testimonials ) ) : '';
 
 		return sprintf(
 			'<div class="sagiris-ets"%1$s%2$s>%3$s<div class="sagiris-ets__track">%4$s</div>%5$s</div>',

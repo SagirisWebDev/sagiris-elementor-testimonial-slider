@@ -167,13 +167,31 @@ final class TestimonialSlideRendererTest extends TestCase {
 
 	public function test_renders_arrows_when_enabled(): void {
 		$html = Testimonial_Slide_Renderer::render(
-			array( array( 'name' => 'A', 'quote' => 'One' ) ),
+			array(
+				array( 'name' => 'A', 'quote' => 'One' ),
+				array( 'name' => 'B', 'quote' => 'Two' ),
+			),
 			'',
 			array( 'show_arrows' => true )
 		);
 
 		$this->assertStringContainsString( 'sagiris-ets__arrow--prev', $html );
 		$this->assertStringContainsString( 'sagiris-ets__arrow--next', $html );
+	}
+
+	public function test_suppresses_arrows_and_dots_for_a_single_testimonial_even_when_enabled(): void {
+		$html = Testimonial_Slide_Renderer::render(
+			array( array( 'name' => 'A', 'quote' => 'One' ) ),
+			'',
+			array(
+				'show_arrows' => true,
+				'show_dots'   => true,
+			)
+		);
+
+		$this->assertStringNotContainsString( 'sagiris-ets__arrow', $html );
+		$this->assertStringNotContainsString( 'sagiris-ets__dots', $html );
+		$this->assertSame( 1, substr_count( $html, 'sagiris-ets__slide' ) );
 	}
 
 	public function test_renders_one_dot_per_testimonial_when_enabled(): void {

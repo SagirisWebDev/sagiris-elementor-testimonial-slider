@@ -34,6 +34,12 @@
 	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
 }
 
+/* A lone testimonial shouldn't be squeezed to a slides-per-view fraction of
+   the track, leaving dead space beside it - let it fill the row instead. */
+.sagiris-ets__slide:only-child {
+	flex-basis: 100%;
+}
+
 .sagiris-ets__photo {
 	width: 56px;
 	height: 56px;
