@@ -17,8 +17,9 @@ class Testimonial_Slide_Renderer {
 
 	/**
 	 * @param array<int, array{name?: string, title?: string, rating?: int|string, quote?: string, image?: array{url?: string}}> $testimonials
+	 * @param string $wrapper_style Optional inline CSS declarations (e.g. from Carousel_Layout::style_attribute()) applied to the outer wrapper.
 	 */
-	public static function render( array $testimonials ): string {
+	public static function render( array $testimonials, string $wrapper_style = '' ): string {
 		if ( empty( $testimonials ) ) {
 			return '';
 		}
@@ -28,8 +29,11 @@ class Testimonial_Slide_Renderer {
 			$slides .= self::render_slide( $testimonial );
 		}
 
+		$style_attr = '' !== $wrapper_style ? sprintf( ' style="%s"', esc_attr( $wrapper_style ) ) : '';
+
 		return sprintf(
-			'<div class="sagiris-ets"><div class="sagiris-ets__track">%s</div></div>',
+			'<div class="sagiris-ets"%s><div class="sagiris-ets__track">%s</div></div>',
+			$style_attr,
 			$slides
 		);
 	}

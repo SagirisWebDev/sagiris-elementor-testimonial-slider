@@ -125,6 +125,33 @@ class Widget_Testimonial_Slider extends Widget_Base {
 		);
 
 		$this->end_controls_section();
+
+		$this->start_controls_section(
+			'layout_section',
+			array(
+				'label' => __( 'Layout', 'sagiris-elementor-testimonial-slider' ),
+				'tab'   => Controls_Manager::TAB_STYLE,
+			)
+		);
+
+		$this->add_responsive_control(
+			'slides_per_view',
+			array(
+				'label'          => __( 'Slides Per View', 'sagiris-elementor-testimonial-slider' ),
+				'type'           => Controls_Manager::SELECT,
+				'default'        => '3',
+				'tablet_default' => '2',
+				'mobile_default' => '1',
+				'options'        => array(
+					'1' => '1',
+					'2' => '2',
+					'3' => '3',
+					'4' => '4',
+				),
+			)
+		);
+
+		$this->end_controls_section();
 	}
 
 	protected function render() {
@@ -132,8 +159,9 @@ class Widget_Testimonial_Slider extends Widget_Base {
 		$testimonials = isset( $settings['testimonials'] ) && is_array( $settings['testimonials'] )
 			? $settings['testimonials']
 			: array();
+		$wrapper_style = Carousel_Layout::style_attribute( $settings );
 
-		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Testimonial_Slide_Renderer escapes each field internally.
-		echo Testimonial_Slide_Renderer::render( $testimonials );
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Testimonial_Slide_Renderer escapes each field internally; $wrapper_style is built from a fixed integer whitelist in Carousel_Layout.
+		echo Testimonial_Slide_Renderer::render( $testimonials, $wrapper_style );
 	}
 }

@@ -4,10 +4,25 @@
 	overflow-x: auto;
 	scroll-snap-type: x mandatory;
 	padding-block: 0.5rem;
+	/* Falls back to the desktop count if PHP didn't emit the custom properties (e.g. a template rendered outside the widget's normal render() path). */
+	--sagiris-ets-active-slides: var(--sagiris-ets-slides-desktop, 3);
+}
+
+/* Elementor's classic default breakpoints: tablet <= 1024px, mobile <= 767px. */
+@media (max-width: 1024px) {
+	.sagiris-ets__track {
+		--sagiris-ets-active-slides: var(--sagiris-ets-slides-tablet, 2);
+	}
+}
+
+@media (max-width: 767px) {
+	.sagiris-ets__track {
+		--sagiris-ets-active-slides: var(--sagiris-ets-slides-mobile, 1);
+	}
 }
 
 .sagiris-ets__slide {
-	flex: 0 0 min(320px, 85%);
+	flex: 0 0 calc((100% - (1.5rem * (var(--sagiris-ets-active-slides) - 1))) / var(--sagiris-ets-active-slides));
 	scroll-snap-align: start;
 	background: #fff;
 	border-radius: 8px;

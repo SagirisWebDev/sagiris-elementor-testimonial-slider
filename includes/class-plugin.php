@@ -23,6 +23,7 @@ class Plugin {
 	 */
 	public static function register_widgets( $widgets_manager ): void {
 		require_once SAGIRIS_ETS_PATH . 'includes/class-testimonial-slide-renderer.php';
+		require_once SAGIRIS_ETS_PATH . 'includes/class-carousel-layout.php';
 		require_once SAGIRIS_ETS_PATH . 'includes/class-widget-testimonial-slider.php';
 
 		$widgets_manager->register( new Widget_Testimonial_Slider() );

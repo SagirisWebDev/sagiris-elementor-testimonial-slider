@@ -10,6 +10,23 @@ final class TestimonialSlideRendererTest extends TestCase {
 		$this->assertSame( '', Testimonial_Slide_Renderer::render( array() ) );
 	}
 
+	public function test_omits_style_attribute_when_wrapper_style_is_empty(): void {
+		$html = Testimonial_Slide_Renderer::render(
+			array( array( 'name' => 'A', 'quote' => 'One' ) )
+		);
+
+		$this->assertStringNotContainsString( 'style=', $html );
+	}
+
+	public function test_applies_wrapper_style_when_provided(): void {
+		$html = Testimonial_Slide_Renderer::render(
+			array( array( 'name' => 'A', 'quote' => 'One' ) ),
+			'--sagiris-ets-slides-desktop:4;'
+		);
+
+		$this->assertStringContainsString( '<div class="sagiris-ets" style="--sagiris-ets-slides-desktop:4;">', $html );
+	}
+
 	public function test_renders_a_slide_with_escaped_content(): void {
 		$html = Testimonial_Slide_Renderer::render(
 			array(

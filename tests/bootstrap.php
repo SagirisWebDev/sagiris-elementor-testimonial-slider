@@ -29,3 +29,4 @@ if ( ! function_exists( 'esc_url' ) ) {
 }
 
 require_once __DIR__ . '/../includes/class-testimonial-slide-renderer.php';
+require_once __DIR__ . '/../includes/class-carousel-layout.php';
