@@ -11,3 +11,8 @@
 
 # Logs
 *.log
+
+# Dev-only tooling (PHPUnit, pulled in via Composer - not used for plugin autoloading)
+/vendor/
+.phpunit.result.cache
+/test-results/

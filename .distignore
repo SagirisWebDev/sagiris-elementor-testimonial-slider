@@ -1,0 +1,36 @@
+# .distignore — paths excluded from the production zip.
+# Used by `npm run plugin-zip` (sagiris-plugin-zip global script via rsync).
+
+# Tests & test infrastructure.
+/tests
+phpunit.xml.dist
+phpunit.xml
+.phpunit.result.cache
+
+# Internal docs and agent context files.
+/docs
+CLAUDE.md
+CONTEXT.md
+/.claude
+
+# Dev dependencies & lockfiles.
+/vendor
+package.json
+package-lock.json
+composer.json
+composer.lock
+
+# Tooling state.
+/.git
+/.github
+.gitignore
+.gitattributes
+.distignore
+.editorconfig
+
+# OS junk.
+.DS_Store
+Thumbs.db
+
+# Build & release zip artifacts.
+*.zip
